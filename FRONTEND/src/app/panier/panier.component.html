@@ -1,0 +1,13 @@
+<div class="main-content">
+    <table *ngFor="let product of dataSource  | async">
+
+        <ng-container>
+            <br>
+            <b>{{product.name}}</b>
+            <p>{{ product.description }} <br>
+                {{product.price | currency:'EUR'}}
+            </p>
+            <button (click)="delToMagasinList(product)">Supprimer</button>
+        </ng-container>
+    </table>
+</div>
