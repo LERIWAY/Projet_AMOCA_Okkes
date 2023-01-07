@@ -5,7 +5,6 @@ import { Product } from '../Class/product';
 import { AddProduct, DeleteProduct } from '../magasin/magasin-action';
 import { MonserviceService } from '../services/monservice.service';
 
-declare var buy: any;
 
 @Component({
   selector: 'app-component-catalogue',
@@ -20,12 +19,21 @@ export class ComponentCatalogueComponent implements OnInit {
   }
   status: boolean = false;
 
-  clickEvent(){
-    this.status = !this.status;       
+  clickEvent(product: Product){
+    //change status of product
+    if(product.status){
+      product.status = false;
+      this.status = true;
+    }
+    else{
+      product.status = true;
+      this.status = false;
+    }
+    //product.status = !product.status;
+    //this.status = !this.status;    
 }
 
   addToMagasinList(product: Product): void{
-    this.status = !this.status;  
     this.store.dispatch(new AddProduct(product));
   }
 
@@ -35,7 +43,6 @@ export class ComponentCatalogueComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCatalogueProducts();
-    new buy();
   }
 
   getCatalogueProducts() {
