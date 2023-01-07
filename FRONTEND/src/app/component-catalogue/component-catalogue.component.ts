@@ -5,6 +5,8 @@ import { Product } from '../Class/product';
 import { AddProduct, DeleteProduct } from '../magasin/magasin-action';
 import { MonserviceService } from '../services/monservice.service';
 
+declare var buy: any;
+
 @Component({
   selector: 'app-component-catalogue',
   templateUrl: './component-catalogue.component.html',
@@ -16,8 +18,14 @@ export class ComponentCatalogueComponent implements OnInit {
 
   constructor(private monserviceService: MonserviceService, private store: Store) {
   }
+  status: boolean = false;
+
+  clickEvent(){
+    this.status = !this.status;       
+}
 
   addToMagasinList(product: Product): void{
+    this.status = !this.status;  
     this.store.dispatch(new AddProduct(product));
   }
 
@@ -27,6 +35,7 @@ export class ComponentCatalogueComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCatalogueProducts();
+    new buy();
   }
 
   getCatalogueProducts() {
