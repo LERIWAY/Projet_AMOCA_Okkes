@@ -24,6 +24,7 @@ import { PanierComponent } from './panier/panier.component';
 import { ApiHttpInterceptor } from './services/apihttpinterceptor';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { HomeComponent } from './home/home.component';
     AppRoutingModule,
     CatalogueModule,
     ContactModule,
-    NgxsModule.forRoot([MagasinState])
+    NgxsModule.forRoot([MagasinState]),
+    // BrowserAnimationsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

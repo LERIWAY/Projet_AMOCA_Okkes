@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { LoginService } from '../services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -24,6 +25,8 @@ export class LoginComponent implements OnInit {
       this.loginService.login(this.loginForm.value.login, this.loginForm.value.password).subscribe(
         (data) => {
           console.log(data);
+          alert('Vous êtes connecté !');
+          this.router.navigateByUrl('catalogue');
         }
       );
     }

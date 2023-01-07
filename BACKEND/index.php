@@ -20,20 +20,18 @@ $app->get('/api/hello/{name}', function (Request $request, Response $response, $
 // APi d'authentification générant un JWT
 $app->post('/api/login', function (Request $request, Response $response, $args) {   
     $err=false;
-    $body = $request->getParsedBody();
+    $inputJSON = file_get_contents('php://input');
+    $body = json_decode( $inputJSON, TRUE );
     $login = $body ['login'] ?? "";
-    $pass = $body ['pass'] ?? "";
+    $password = $body ['password'] ?? "";
 
-    if (!preg_match("/[a-zA-Z0-9]{1,20}/",$login)) {
-        $err = true;
-    }
-    if (!preg_match("/[a-zA-Z0-9]{1,20}/",$pass))  {
+    if (empty($login) || empty($password)|| !preg_match("/^[a-zA-Z0-9]+$/", $login) || !preg_match("/^[a-zA-Z0-9]+$/", $password)) {
         $err=true;
     }
-
+ 
     if (!$err) {
             $response = createJwT ($response);
-            $data = array('nom' => 'toto', 'prenom' => 'titi');
+            $data = array('login' => $login, 'password' => $password);
             $response->getBody()->write(json_encode($data));
      } else {          
             $response = $response->withStatus(401);
@@ -84,6 +82,7 @@ $options = [
     }
 ];
 
+// get products
 $app->get('/api/product', function (Request $request, Response $response, $args) {
     $json = file_get_contents("./mock/catalogue.json");
     $response = addHeaders($response);
