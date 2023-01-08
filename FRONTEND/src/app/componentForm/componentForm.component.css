@@ -3,6 +3,10 @@ label.mdpError {
     color: red;
 }
 
+body{
+  margin-bottom: 5%;
+}
+
 button.envoyer {
     background-color: #1798a1;
     color: white;
