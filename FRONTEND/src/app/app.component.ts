@@ -21,13 +21,13 @@ export class AppComponent {
   isLoged = false;
 
   onSubmit() {
-    this.isLoged = true;
     if(this.loginForm.value.login != "" && this.loginForm.value.password != "") {
       this.loginService.login(this.loginForm.value.login, this.loginForm.value.password).subscribe(
         (data) => {
           console.log(data);
           alert('Vous êtes connecté !');
           this.router.navigateByUrl('home');
+          this.isLoged = true;
         }
       );
     }
