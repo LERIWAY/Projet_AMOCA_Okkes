@@ -28,10 +28,8 @@ export class ComponentCatalogueComponent implements OnInit {
     else{
       product.status = true;
       this.status = false;
-    }
-    //product.status = !product.status;
-    //this.status = !this.status;    
-}
+    } 
+  }
 
   addToMagasinList(product: Product): void{
     this.store.dispatch(new AddProduct(product));
@@ -59,6 +57,4 @@ export class ComponentCatalogueComponent implements OnInit {
   updateList(event: Product[]) {
     this.products = event;
   }
-
-
 }

@@ -1,7 +1,176 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            font-size: 16px;
+            background-color: #fff;
+        }
+
+        h1 {
+            font-variant: small-caps;
+            text-align: center;
+        }
+
+        .contact section {
+            text-align: right;
+            padding: 10px;
+        }
+
+        .contact section a {
+            border: none;
+            text-decoration: none;
+            outline: none;
+            color: #e05e02;
+        }
+
+        .contact:target {
+            opacity: 1;
+        }
+
+        .contact-form {
+            position: absolute;
+            max-width: 500px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .contact-form-input,
+        .contact-form button {
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 24px;
+            letter-spacing: 1px;
+            border: none;
+            width: 100%;
+            outline: none;
+        }
+
+        .contact-form button:nth-child(1) {
+            background-color: #08c608;
+            padding: 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .contact-form button:nth-child(2) {
+            background-color: rgb(177, 176, 176);
+            padding: 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .contact-form div:nth-child(1),
+        .contact-form div:nth-child(2),
+        .contact-form div:nth-child(3),
+        .contact-form div:nth-child(4),
+        .contact-form div:nth-child(5),
+        .contact-form div:nth-child(6),
+        .contact-form div:nth-child(7) {
+            position: relative;
+        }
+
+        .contact-form div:nth-child(1)::after,
+        .contact-form div:nth-child(2)::after,
+        .contact-form div:nth-child(3)::after,
+        .contact-form div:nth-child(4)::after,
+        .contact-form div:nth-child(5)::after,
+        .contact-form div:nth-child(6)::after,
+        .contact-form div:nth-child(7)::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .contact-form textarea {
+            overflow: auto;
+            height: 100px;
+            text-transform: none;
+        }
+
+        .register {
+            background-color: #ffbd4c;
+            padding: 20px;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        select {
+            outline: 0;
+            border: 0 !important;
+            background: #F9F9F9;
+            background-image: none;
+            box-shadow: none;
+            margin-left: 5%;
+            cursor: pointer;
+            width: 30%;
+        }
+
+        .countryCode {
+            position: relative;
+            width: 350px;
+            height: 45px;
+            overflow: hidden;
+            border-radius: 5px;
+            border: 1px solid #CED4DA;
+        }
+
+        .phonenumberiinput {
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 24px;
+            letter-spacing: 1px;
+            border: none;
+            width: 50%;
+            outline: none;
+        }
+    </style>
+</head>
+
+
 <html>
-    <app-header></app-header>
+    <app-header [ngClass]="isLoged ? 'show' : 'hide'" ></app-header>
 
-    <router-outlet></router-outlet>
+    <div>
+        <form class="contact-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()" [ngClass]="isLoged ? 'hide' : 'show'">
+            <div>
+                <input class="contact-form-input" matInput placeholder="Login" formControlName="login" />
+            </div>
+    
+            <div>
+                <input class="contact-form-input" matInput placeholder="Password" formControlName="password"
+                    type="password" />
+            </div>
+            <div>
+                <button raised-button color="primary" type="submit" >
+                    Login
+                </button>
+            </div>
+        </form>
+    </div>
 
-    <app-footer></app-footer>
+    <router-outlet [ngClass]="isLoged ? 'show' : 'hide'"></router-outlet>
+
+    <app-footer [ngClass]="isLoged ? 'show' : 'hide'"></app-footer>
 </html>

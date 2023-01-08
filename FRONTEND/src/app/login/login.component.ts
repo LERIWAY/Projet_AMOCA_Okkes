@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         (data) => {
           console.log(data);
           alert('Vous êtes connecté !');
-          this.router.navigateByUrl('catalogue');
+          this.router.navigateByUrl('home');
         }
       );
     }

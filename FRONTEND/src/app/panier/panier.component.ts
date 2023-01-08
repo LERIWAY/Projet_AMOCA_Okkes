@@ -19,6 +19,20 @@ export class PanierComponent implements OnInit {
 
   dataSource = this.store.select((state) => state.products.products);
 
+  status: boolean = false;
+
+  clickEvent(product: Product){
+    //change status of product
+    if(product.status){
+      product.status = false;
+      this.status = true;
+    }
+    else{
+      product.status = true;
+      this.status = false;
+    } 
+  }
+
 
   constructor(private monserviceService: MonserviceService, private store: Store) {
   }
