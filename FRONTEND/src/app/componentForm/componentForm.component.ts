@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EMPTY, empty } from 'rxjs';
 import { Client } from '../Class/client';
+import { FormService } from '../services/form.service';
 
 @Component({
   selector: 'app-componentForm',
@@ -10,7 +11,7 @@ import { Client } from '../Class/client';
 })
 export class ComponentFormComponent implements OnInit {
 
-  constructor() { }
+  constructor(private formService : FormService) { }
 
   cacher : boolean = true;
 
@@ -59,6 +60,12 @@ export class ComponentFormComponent implements OnInit {
       this.cacher = false;
       this.valid = false;
       this.cacherErreur = true;
+
+      this.formService.saveForm(this.nom, this.prenom, this.adresse, this.cp, this.pays, this.ville, this.tel, this.email, this.genre, this.login, this.password).subscribe(
+        (data) => {
+          console.log(data);
+        }
+      );
     }
     else{
       this.cacherErreur=false;
