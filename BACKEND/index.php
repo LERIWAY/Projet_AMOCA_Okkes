@@ -33,10 +33,10 @@ $app->post('/api/login', function (Request $request, Response $response, $args) 
         $err=true;
     }
 
-    global $entityManager;
-    $user = $entityManager->getRepository(User::class)->findOneBy(array('login' => $login, 'password' => $password));
- 
-    if (!$err && $user) {
+    // global $entityManager;
+    // $user = $entityManager->getRepository('user')->findOneBy(array('login' => $login, 'password' => $password));
+
+    if (!$err) {
             $response = createJwT ($response , $login, $password);
             $response = addHeaders($response);
             $data = array('login' => $login, 'password' => $password);

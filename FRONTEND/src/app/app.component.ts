@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from './services/login.service';
 import { Router } from '@angular/router';
@@ -25,9 +25,9 @@ export class AppComponent {
       this.loginService.login(this.loginForm.value.login, this.loginForm.value.password).subscribe(
         (data) => {
           console.log(data);
+          this.isLoged = true;
           alert('Vous êtes connecté !');
           this.router.navigateByUrl('home');
-          this.isLoged = true;
         }
       );
     }
