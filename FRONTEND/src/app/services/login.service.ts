@@ -15,4 +15,8 @@ export class LoginService {
   login(login: string | undefined | null, password: string | undefined | null): Observable<any> {
     return this.http.post<any>(environment.apiurl + "login", { login: login, password: password });
   }
+
+  signup(login: string | undefined | null, password: string | undefined | null): Observable<any> {
+    return this.http.put<any>(environment.apiurl + "signup", { login: login, password: password });
+  }
 }

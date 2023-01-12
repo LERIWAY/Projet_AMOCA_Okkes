@@ -153,7 +153,8 @@
     <app-header [ngClass]="isLoged ? 'show' : 'hide'" ></app-header>
 
     <div>
-        <form class="contact-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()" [ngClass]="isLoged ? 'hide' : 'show'">
+        <form class="contact-form" [formGroup]="loginForm" [ngClass]="isLoged ? 'hide' : 'show'">
+            <!-- (ngSubmit)="onSubmit()" -->
             <div>
                 <input class="contact-form-input" matInput placeholder="Login" formControlName="login" />
             </div>
@@ -163,8 +164,11 @@
                     type="password" />
             </div>
             <div>
-                <button raised-button color="primary" type="submit" >
+                <button raised-button color="primary" (click)="onSubmit()" >
                     Login
+                </button>
+                <button raised-button color="primary" (click)="onCreate()" >
+                    S'enregistrer
                 </button>
             </div>
         </form>

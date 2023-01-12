@@ -6,7 +6,7 @@ use Tuupola\Middleware\HttpBasicAuthentication;
 use \Firebase\JWT\JWT;
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/../src/User.php';
+require __DIR__ . '/../src/Utilisateur.php';
 require __DIR__ . '/../src/Catalogue.php';
  
 $app = AppFactory::create();
@@ -33,18 +33,46 @@ $app->post('/api/login', function (Request $request, Response $response, $args) 
         $err=true;
     }
 
-    // global $entityManager;
-    // $user = $entityManager->getRepository('user')->findOneBy(array('login' => $login, 'password' => $password));
+    global $entityManager;
+    $user = $entityManager->getRepository('Utilisateur')->findOneBy(array('login' => $login, 'password' => $password));
+    $id = $user->getId();
 
-    if (!$err) {
+    if (!$err && $user) {
             $response = createJwT ($response , $login, $password);
             $response = addHeaders($response);
-            $data = array('login' => $login, 'password' => $password);
+            $data = array('login' => $login, 'id' => $id);
             $response->getBody()->write(json_encode($data));
      } 
      else {
         $response = $response->withStatus(401);
      }
+    return $response;
+});
+
+$app->put('/api/signup', function (Request $request, Response $response, $args) {
+    $inputJSON = file_get_contents('php://input');
+    $body = json_decode( $inputJSON, true ); 
+
+    $login = $body['login'] ;
+    $password = $body['password'] ;
+    $err=false;
+
+    if ($err == false) {
+        global $entityManager;
+        $utilisateur = new Utilisateur;
+
+        $utilisateur->setLogin($login);
+        $utilisateur->setPassword($password);
+
+        $entityManager->persist($utilisateur);
+        $entityManager->flush();
+        
+        $response = addHeaders($response);
+        $response->getBody()->write(json_encode($utilisateur));
+    }
+    else{          
+        $response = $response->withStatus(401);
+    }
     return $response;
 });
 
@@ -82,7 +110,7 @@ $options = [
     "algorithm" => ["HS256"],
     "secret" => JWT_SECRET,
     "path" => ["/api"],
-    "ignore" => ["/api/hello","/api/login","/api/createUser", "/api/catalogue"],
+    "ignore" => ["/api/hello","/api/login","/api/signup", "/api/catalogue", "/api/signup"],
     "error" => function ($response, $arguments) {
         $data = array('ERREUR' => 'Connexion', 'ERREUR' => 'JWT Non valide');
         $response = $response->withStatus(401);

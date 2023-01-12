@@ -32,4 +32,17 @@ export class AppComponent {
       );
     }
   }
+
+  onCreate(){
+    if(this.loginForm.value.login != "" && this.loginForm.value.password != "") {
+      this.loginService.signup(this.loginForm.value.login, this.loginForm.value.password).subscribe(
+        (data) => {
+          console.log(data);
+          this.isLoged = true;
+          alert('Vous vous êtes enregsitré !');
+          this.router.navigateByUrl('home');
+        }
+      );
+    }
+  }
 }
