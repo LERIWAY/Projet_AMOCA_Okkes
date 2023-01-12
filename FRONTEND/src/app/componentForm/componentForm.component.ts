@@ -61,11 +61,11 @@ export class ComponentFormComponent implements OnInit {
       this.valid = false;
       this.cacherErreur = true;
 
-      this.formService.saveForm(this.nom, this.prenom, this.adresse, this.cp, this.pays, this.ville, this.tel, this.email, this.genre, this.login, this.password).subscribe(
-        (data) => {
-          console.log(data);
-        }
-      );
+      // this.formService.saveForm(this.nom, this.prenom, this.adresse, this.cp, this.pays, this.ville, this.tel, this.email, this.genre, this.login, this.password).subscribe(
+      //   (data) => {
+      //     console.log(data);
+      //   }
+      // );
     }
     else{
       this.cacherErreur=false;
