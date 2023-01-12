@@ -9,7 +9,6 @@ import { MagasinState } from '../magasin/magasin-state';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
   title : String = "Composant initialisé";
 
   @Select(MagasinState.getNbProducts)

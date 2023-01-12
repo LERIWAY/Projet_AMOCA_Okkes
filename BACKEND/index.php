@@ -5,10 +5,14 @@ use Slim\Factory\AppFactory;
 use Tuupola\Middleware\HttpBasicAuthentication;
 use \Firebase\JWT\JWT;
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../src/User.php';
+require __DIR__ . '/../src/Catalogue.php';
  
-const JWT_SECRET = "makey1234567";
-
 $app = AppFactory::create();
+const JWT_SECRET = "leriway123";
+$app->addErrorMiddleware(true, true, true);
+
 
 $app->get('/api/hello/{name}', function (Request $request, Response $response, $args) {
     $array = [];
@@ -28,13 +32,18 @@ $app->post('/api/login', function (Request $request, Response $response, $args) 
     if (empty($login) || empty($password)|| !preg_match("/^[a-zA-Z0-9]+$/", $login) || !preg_match("/^[a-zA-Z0-9]+$/", $password)) {
         $err=true;
     }
+
+    global $entityManager;
+    $user = $entityManager->getRepository(User::class)->findOneBy(array('login' => $login, 'password' => $password));
  
-    if (!$err) {
-            $response = createJwT ($response);
+    if (!$err && $user) {
+            $response = createJwT ($response , $login, $password);
+            $response = addHeaders($response);
             $data = array('login' => $login, 'password' => $password);
             $response->getBody()->write(json_encode($data));
-     } else {          
-            $response = $response->withStatus(401);
+     } 
+     else {
+        $response = $response->withStatus(401);
      }
     return $response;
 });
@@ -49,14 +58,13 @@ $app->get('/api/user', function (Request $request, Response $response, $args) {
     return $response;
 });
 
-function createJwT (Response $response) : Response {
+function createJwT (Response $response, $login, $password) : Response {
 
     $issuedAt = time();
-    $expirationTime = $issuedAt + 6000;
+    $expirationTime = $issuedAt + 700;
     $payload = array(
-    'userid' => '1',
-    'email' => 'okkes2001@hotmail.fr',
-    'pseudo' => 'leriway',
+    'login' => $login,
+    'password' => $password,
     'iat' => $issuedAt,
     'exp' => $expirationTime
     );
@@ -74,7 +82,7 @@ $options = [
     "algorithm" => ["HS256"],
     "secret" => JWT_SECRET,
     "path" => ["/api"],
-    "ignore" => ["/api/hello","/api/login","/api/createUser"],
+    "ignore" => ["/api/hello","/api/login","/api/createUser", "/api/catalogue"],
     "error" => function ($response, $arguments) {
         $data = array('ERREUR' => 'Connexion', 'ERREUR' => 'JWT Non valide');
         $response = $response->withStatus(401);
@@ -87,6 +95,24 @@ $app->get('/api/product', function (Request $request, Response $response, $args)
     $json = file_get_contents("./mock/catalogue.json");
     $response = addHeaders($response);
     $response->getBody()->write($json);
+    return $response;
+});
+
+function  addHeaders (Response $response) : Response {
+    $response = $response
+    ->withHeader("Content-Type", "application/json")
+    ->withHeader('Access-Control-Allow-Origin', ('https://deploy-b6a9.onrender.com'))
+    ->withHeader('Access-Control-Allow-Headers', 'Content-Type,  Authorization')
+    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+    ->withHeader('Access-Control-Expose-Headers', 'Authorization');
+    return $response;
+}
+
+$app->get('/api/catalogue', function (Request $request, Response $response, $args) {
+    global $entityManager;
+    $products = $entityManager->getRepository(Catalogue::class)->findAll();
+    $response = addHeaders($response);
+    $response->getBody()->write(json_encode($products));
     return $response;
 });
 
